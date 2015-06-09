@@ -16,24 +16,43 @@ class Calculator(QWidget):
         self.createLayout()
         self.createConnection()
 
+    def calculateHeadAndTailMonth(self):
+        total = 0
+        headDays = self.beginDate.date().daysInMonth() - self.beginDate.date().day() + 1
+        tailDays = self.endDate.date().day()
+
+        headRate = float(headDays) / self.beginDate.date().daysInMonth()
+        tailRate = float(tailDays) / self.endDate.date().daysInMonth()
+
+        base = self.base.value()
+        total = (headRate + tailRate) * base
+
+        return total
+    
     def calculate(self):
         total = 0
-        if self.beginDate.date().month() == self.endDate.date().month():
-            days = self.beginDate.date().daysTo(self.endDate.date())
-            rate = float(days) / self.beginDate.date().daysInMonth()
-            base = self.base.value()
-            total = rate * base
-        else:
-            prevDays = self.beginDate.date().daysInMonth() - self.beginDate.date().day() + 1
-            curDays = self.endDate.date().day()
-
-            prevRate = float(prevDays) / self.beginDate.date().daysInMonth()
-            curRate = float(curDays) / self.endDate.date().daysInMonth()
+        beginYear = self.beginDate.date().year()
+        endYear = self.endDate.date().year()
+        if beginYear == endYear:
+            if self.beginDate.date().month() == self.endDate.date().month():
+                days = self.beginDate.date().daysTo(self.endDate.date())
+                rate = float(days) / self.beginDate.date().daysInMonth()
+                base = self.base.value()
+                total = rate * base
+            elif self.endDate.date().month() - self.beginDate.date().month() > 1:
+                wholeMonths = []
+                prevMonth = self.beginDate.date().month() + 1
+                curMonth = self.endDate.date().month()
+                for month in range(prevMonth, curMonth):
+                    wholeMonths.append(month)
+                total = len(wholeMonths) * self.base.value() + self.calculateHeadAndTailMonth() 
+            else:
+                total = self.calculateHeadAndTailMonth()
             
-            base = self.base.value()
-            total = (prevRate + curRate) * base
+            self.result.setText(str(total))
+        else:
+            self.result.setText("Different year.")
 
-        self.result.setText(str(total))
     
     def createLayout(self):
 
