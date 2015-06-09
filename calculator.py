@@ -49,11 +49,17 @@ class Calculator(QWidget):
             else:
                 total = self.calculateHeadAndTailMonth()
             
-            self.result.setText(str(total))
+            self.result.setText("$" + str(total))
         else:
             self.result.setText("Different year.")
 
-    
+    def resetAll(self):
+        self.beginDate.setDateTime(QDateTime.currentDateTime())
+        self.endDate.setDateTime(QDateTime.currentDateTime())
+        self.base.setValue(1)
+        self.calculate()
+
+
     def createLayout(self):
 
         self.beginDate = QDateEdit(self) 
@@ -77,6 +83,7 @@ class Calculator(QWidget):
         self.base.setRange(1, 20000)
         self.baseLabel.setBuddy(self.base)
         
+        self.resetButton = QPushButton("&Reset")
         self.quitButton = QPushButton("&Quit")
         
         self.resultLabel = QLabel("Result:")
@@ -91,6 +98,7 @@ class Calculator(QWidget):
         v1.addWidget(self.base)
         v1.addWidget(self.resultLabel)
         v1.addWidget(self.result)
+        v1.addWidget(self.resetButton)
         v1.addWidget(self.quitButton)
         v1.addStretch(1)
         
@@ -104,6 +112,7 @@ class Calculator(QWidget):
         self.beginDate.dateChanged.connect(self.calculate)
         self.endDate.dateChanged.connect(self.calculate)
         self.base.valueChanged.connect(self.calculate)
+        self.resetButton.clicked.connect(self.resetAll)
         self.quitButton.clicked.connect(self.close)
         
 
