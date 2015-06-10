@@ -138,10 +138,3 @@ class Calculator(QWidget):
         self.resetButton.clicked.connect(self.resetAll)
         self.quitButton.clicked.connect(self.close)
         
-
-app = QApplication(sys.argv)
-
-calculator = Calculator()
-calculator.show()
-
-app.exec_()
