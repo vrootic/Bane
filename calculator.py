@@ -35,7 +35,7 @@ class Calculator(QWidget):
         endYear = self.endDate.date().year()
         if beginYear == endYear:
             if self.beginDate.date().month() == self.endDate.date().month():
-                days = self.beginDate.date().daysTo(self.endDate.date())
+                days = self.beginDate.date().daysTo(self.endDate.date()) + 1
                 rate = float(days) / self.beginDate.date().daysInMonth()
                 base = self.base.value()
                 total = rate * base
