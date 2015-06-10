@@ -24,7 +24,7 @@ class Calculator(QWidget):
         headRate = float(headDays) / self.beginDate.date().daysInMonth()
         tailRate = float(tailDays) / self.endDate.date().daysInMonth()
 
-        base = self.base.value()
+        base = self.base.text().toInt()[0]
         total = (headRate + tailRate) * base
 
         return total
@@ -35,9 +35,9 @@ class Calculator(QWidget):
         endYear = self.endDate.date().year()
         if beginYear == endYear:
             if self.beginDate.date().month() == self.endDate.date().month():
-                days = self.beginDate.date().daysTo(self.endDate.date())
+                days = self.beginDate.date().daysTo(self.endDate.date()) + 1
                 rate = float(days) / self.beginDate.date().daysInMonth()
-                base = self.base.value()
+                base = self.base.text().toInt()[0]
                 total = rate * base
             elif self.endDate.date().month() - self.beginDate.date().month() > 1:
                 wholeMonths = []
@@ -45,7 +45,7 @@ class Calculator(QWidget):
                 curMonth = self.endDate.date().month()
                 for month in range(prevMonth, curMonth):
                     wholeMonths.append(month)
-                total = len(wholeMonths) * self.base.value() + self.calculateHeadAndTailMonth() 
+                total = len(wholeMonths) * self.base.text().toInt()[0] + self.calculateHeadAndTailMonth() 
             else:
                 total = self.calculateHeadAndTailMonth()
             
@@ -56,7 +56,7 @@ class Calculator(QWidget):
     def resetAll(self):
         self.beginDate.setDateTime(QDateTime.currentDateTime())
         self.endDate.setDateTime(QDateTime.currentDateTime())
-        self.base.setValue(1)
+        self.base.setText(str(1))
         self.calculate()
 
     def createBaseInput(self):
@@ -115,8 +115,7 @@ class Calculator(QWidget):
         self.endDateLabel.setBuddy(self.beginDate)
         
         self.baseLabel = QLabel("Base")
-        self.base = QSpinBox()
-        self.base.setRange(1, 20000)
+        self.base = QLineEdit()
         self.baseLabel.setBuddy(self.base)
         self.addButton = QPushButton("&Add record")
         self.bases = []
@@ -133,7 +132,7 @@ class Calculator(QWidget):
     def createConnection(self):
         self.beginDate.dateChanged.connect(self.calculate)
         self.endDate.dateChanged.connect(self.calculate)
-        self.base.valueChanged.connect(self.calculate)
+        self.base.textChanged.connect(self.calculate)
         self.addButton.clicked.connect(self.createBaseInput)
         self.resetButton.clicked.connect(self.resetAll)
         self.quitButton.clicked.connect(self.close)
