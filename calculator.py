@@ -13,7 +13,7 @@ class Calculator(QWidget):
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
-        self.createLayout()
+        self.createLayoutAndWidget()
         self.createConnection()
 
     def calculateHeadAndTailMonth(self):
@@ -26,7 +26,9 @@ class Calculator(QWidget):
 
         base = self.base.text().toInt()[0]
         total = (headRate + tailRate) * base
-
+        
+        self.headDays.setText(str(headDays))
+        self.tailDays.setText(str(tailDays))
         return total
     
     def calculate(self):
@@ -39,6 +41,8 @@ class Calculator(QWidget):
                 rate = float(days) / self.beginDate.date().daysInMonth()
                 base = self.base.text().toInt()[0]
                 total = rate * base
+                self.headDays.setText("")
+                self.tailDays.setText("")
             elif self.endDate.date().month() - self.beginDate.date().month() > 1:
                 wholeMonths = []
                 prevMonth = self.beginDate.date().month() + 1
@@ -59,15 +63,24 @@ class Calculator(QWidget):
         self.base.setText(str(1))
         self.calculate()
 
-    def handleLayout(self):
+    def addWidgetToLayout(self):
         self.v1.addWidget(self.beginDateLabel)
         self.v1.addWidget(self.beginDate)
         self.v1.addWidget(self.endDateLabel)
         self.v1.addWidget(self.endDate)
         self.v1.addWidget(self.baseLabel)
         self.v1.addWidget(self.base)
-        self.v1.addWidget(self.resultLabel)
-        self.v1.addWidget(self.result)
+        
+        self.h1.addWidget(self.resultLabel)
+        self.h1.addWidget(self.headDaysLabel)
+        self.h1.addWidget(self.tailDaysLabel)
+        self.h2.addWidget(self.result)
+        self.h2.addWidget(self.headDays)
+        self.h2.addWidget(self.tailDays)
+
+        self.v1.addLayout(self.h1)
+        self.v1.addLayout(self.h2)
+        
         self.v1.addWidget(self.resetButton)
         self.v1.addWidget(self.quitButton)
 
@@ -75,7 +88,7 @@ class Calculator(QWidget):
         self.layout.addLayout(self.v1)        
         self.setLayout(self.layout)
 
-    def createLayout(self):
+    def createLayoutAndWidget(self):
 
         self.beginDate = QDateEdit(self) 
         self.beginDate.setDateTime(QDateTime.currentDateTime())
@@ -100,11 +113,22 @@ class Calculator(QWidget):
         self.resetButton = QPushButton("&Reset")
         self.quitButton = QPushButton("&Quit")
         
-        self.resultLabel = QLabel("Result:")
+        self.resultLabel = QLabel("Result:   ")
         self.result = QLabel("$0.0")
+        self.resultLabel.setBuddy(self.result)
+
+        self.headDays = QLabel("0")
+        self.headDaysLabel = QLabel("Head days:")
+        self.headDaysLabel.setBuddy(self.headDays)
+        
+        self.tailDays = QLabel("0")
+        self.tailDaysLabel = QLabel("Tail days:")
+        self.tailDaysLabel.setBuddy(self.tailDays)
 
         self.v1 = QVBoxLayout()
-        self.handleLayout() 
+        self.h1 = QHBoxLayout()
+        self.h2 = QHBoxLayout()
+        self.addWidgetToLayout() 
 	
     def createConnection(self):
         self.beginDate.dateChanged.connect(self.calculate)
