@@ -75,15 +75,16 @@ class Calculator(QWidget):
         self.v1.addWidget(self.resultLabel)
         self.v1.addWidget(self.result)
         
-        self.v1.addWidget(self.headDaysLabel)
-        self.v1.addWidget(self.headDays)
+        self.h1.addWidget(self.headDaysLabel)
+        self.h2.addWidget(self.headDays)
+        self.h1.addWidget(self.tailDaysLabel)
+        self.h2.addWidget(self.tailDays)
+        
+        self.v1.addLayout(self.h1)
+        self.v1.addLayout(self.h2)
+        
         self.v1.addWidget(self.wholeMonthsLabel)
         self.v1.addWidget(self.wholeMonths)
-        self.v1.addWidget(self.tailDaysLabel)
-        self.v1.addWidget(self.tailDays)
-
-        #self.v1.addLayout(self.h1)
-        #self.v1.addLayout(self.h2)
         
         self.v1.addWidget(self.resetButton)
         self.v1.addWidget(self.quitButton)
