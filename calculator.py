@@ -43,13 +43,15 @@ class Calculator(QWidget):
                 total = rate * base
                 self.headDays.setText("")
                 self.tailDays.setText("")
+                self.wholeMonths.setText("")
             elif self.endDate.date().month() - self.beginDate.date().month() > 1:
                 wholeMonths = []
                 prevMonth = self.beginDate.date().month() + 1
                 curMonth = self.endDate.date().month()
                 for month in range(prevMonth, curMonth):
-                    wholeMonths.append(month)
+                    wholeMonths.append(calendar.month_abbr[month])
                 total = len(wholeMonths) * int(self.base.text()) + self.calculateHeadAndTailMonth() 
+                self.wholeMonths.setText(str(wholeMonths))
             else:
                 total = self.calculateHeadAndTailMonth()
             
@@ -70,16 +72,18 @@ class Calculator(QWidget):
         self.v1.addWidget(self.endDate)
         self.v1.addWidget(self.baseLabel)
         self.v1.addWidget(self.base)
+        self.v1.addWidget(self.resultLabel)
+        self.v1.addWidget(self.result)
         
-        self.h1.addWidget(self.resultLabel)
-        self.h1.addWidget(self.headDaysLabel)
-        self.h1.addWidget(self.tailDaysLabel)
-        self.h2.addWidget(self.result)
-        self.h2.addWidget(self.headDays)
-        self.h2.addWidget(self.tailDays)
+        self.v1.addWidget(self.headDaysLabel)
+        self.v1.addWidget(self.headDays)
+        self.v1.addWidget(self.wholeMonthsLabel)
+        self.v1.addWidget(self.wholeMonths)
+        self.v1.addWidget(self.tailDaysLabel)
+        self.v1.addWidget(self.tailDays)
 
-        self.v1.addLayout(self.h1)
-        self.v1.addLayout(self.h2)
+        #self.v1.addLayout(self.h1)
+        #self.v1.addLayout(self.h2)
         
         self.v1.addWidget(self.resetButton)
         self.v1.addWidget(self.quitButton)
@@ -124,6 +128,10 @@ class Calculator(QWidget):
         self.tailDays = QLabel("0")
         self.tailDaysLabel = QLabel("Tail days:")
         self.tailDaysLabel.setBuddy(self.tailDays)
+
+        self.wholeMonths = QLabel("")
+        self.wholeMonthsLabel = QLabel("Whole months:")
+        self.wholeMonthsLabel.setBuddy(self.wholeMonths)
 
         self.v1 = QVBoxLayout()
         self.h1 = QHBoxLayout()
