@@ -6,6 +6,7 @@ A simple calculator for internal use.
 *	There are other use cases.
 * 	It will show abbreviation of month which acrossed the date range if the date range is over two months.
 
+![](https://github.com/vrootic/Bane/blob/master/img/1.png)
 
 # Installation
 The project is based on Qt4, Python 2.7, and PySide.
