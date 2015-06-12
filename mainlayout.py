@@ -14,7 +14,7 @@ layout.addWidget(calculator)
 
 widget = QWidget()
 widget.setLayout(layout)
-widget.setWindowTitle("Calculator")
+widget.setWindowTitle("Bane")
 widget.resize(300, 300)
 widget.show()
 calculator.quitButton.clicked.connect(widget.close)
