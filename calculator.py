@@ -16,6 +16,12 @@ class Calculator(QWidget):
         self.createLayoutAndWidget()
         self.createConnection()
 
+    def checkBaseInput(self, baseInput):
+        try:
+            return int(baseInput)
+        except ValueError:
+            return 1
+
     def calculateHeadAndTailMonth(self):
         total = 0
         headDays = self.beginDate.date().daysInMonth() - self.beginDate.date().day() + 1
@@ -24,7 +30,7 @@ class Calculator(QWidget):
         headRate = float(headDays) / self.beginDate.date().daysInMonth()
         tailRate = float(tailDays) / self.endDate.date().daysInMonth()
 
-        base = int(self.base.text())
+        base = self.checkBaseInput(self.base.text())
         total = (headRate + tailRate) * base
         
         self.headDays.setText(str(headDays))
@@ -39,7 +45,7 @@ class Calculator(QWidget):
             if self.beginDate.date().month() == self.endDate.date().month():
                 days = self.beginDate.date().daysTo(self.endDate.date()) + 1
                 rate = float(days) / self.beginDate.date().daysInMonth()
-                base = int(self.base.text())
+                base = self.checkBaseInput(self.base.text())
                 total = rate * base
                 self.headDays.setText("")
                 self.tailDays.setText("")
@@ -50,7 +56,7 @@ class Calculator(QWidget):
                 curMonth = self.endDate.date().month()
                 for month in range(prevMonth, curMonth):
                     wholeMonths.append(calendar.month_abbr[month])
-                total = len(wholeMonths) * int(self.base.text()) + self.calculateHeadAndTailMonth() 
+                total = len(wholeMonths) * self.checkBaseInput(self.base.text()) + self.calculateHeadAndTailMonth() 
                 self.wholeMonths.setText(str(wholeMonths))
             else:
                 total = self.calculateHeadAndTailMonth()
