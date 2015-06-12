@@ -5,8 +5,8 @@ import calendar
 import time
 import math
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PySide.QtGui import *
+from PySide.QtCore import *
 
 
 class Calculator(QWidget):
@@ -24,7 +24,7 @@ class Calculator(QWidget):
         headRate = float(headDays) / self.beginDate.date().daysInMonth()
         tailRate = float(tailDays) / self.endDate.date().daysInMonth()
 
-        base = self.base.text().toInt()[0]
+        base = int(self.base.text())
         total = (headRate + tailRate) * base
         
         self.headDays.setText(str(headDays))
@@ -39,7 +39,7 @@ class Calculator(QWidget):
             if self.beginDate.date().month() == self.endDate.date().month():
                 days = self.beginDate.date().daysTo(self.endDate.date()) + 1
                 rate = float(days) / self.beginDate.date().daysInMonth()
-                base = self.base.text().toInt()[0]
+                base = int(self.base.text())
                 total = rate * base
                 self.headDays.setText("")
                 self.tailDays.setText("")
@@ -49,7 +49,7 @@ class Calculator(QWidget):
                 curMonth = self.endDate.date().month()
                 for month in range(prevMonth, curMonth):
                     wholeMonths.append(month)
-                total = len(wholeMonths) * self.base.text().toInt()[0] + self.calculateHeadAndTailMonth() 
+                total = len(wholeMonths) * int(self.base.text()) + self.calculateHeadAndTailMonth() 
             else:
                 total = self.calculateHeadAndTailMonth()
             
@@ -107,7 +107,7 @@ class Calculator(QWidget):
         self.endDateLabel.setBuddy(self.beginDate)
         
         self.baseLabel = QLabel("Base")
-        self.base = QLineEdit()
+        self.base = QLineEdit("1")
         self.baseLabel.setBuddy(self.base)
          
         self.resetButton = QPushButton("&Reset")
